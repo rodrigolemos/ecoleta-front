@@ -15,6 +15,7 @@ interface Item {
 const Points = () => {
   const navigation = useNavigation()
   const [items, setItems] = useState<Item[]>([])
+  const [selectedItems, setSelectedItems] = useState<number[]>([])
 
   function handleNavigateBack() {
     navigation.goBack()
@@ -24,6 +25,17 @@ const Points = () => {
     navigation.navigate('Detail')
   }
 
+  function handleSelectItem(id: number) {
+    const alreadySelected = selectedItems.findIndex(item => item === id)
+
+    if (alreadySelected >= 0) {
+      const filteredItems = selectedItems.filter(item => item !== id)
+      setSelectedItems(filteredItems)
+    } else {
+      setSelectedItems([...selectedItems, id])
+    }
+  }
+
   async function fetchItems() {
     try {
       const response = await api.get('/items')
@@ -31,7 +43,6 @@ const Points = () => {
         throw new Error('Não foi possível consultar os itens.')
       
       setItems(response.data)
-      console.log(response.data)
     } catch (error) {
       alert(error)
     }
@@ -91,9 +102,12 @@ const Points = () => {
           {items.map(item => (
             <TouchableOpacity
               key={String(item.id)}
-              style={styles.item}
-              onPress={() => {}}
               activeOpacity={0.6}
+              onPress={() => handleSelectItem(item.id)}
+              style={[
+                styles.item,
+                selectedItems.includes(item.id) ? styles.selectedItem : {}
+              ]}
             >
               <SvgUri width={42} height={42} uri={item.image_url} />
               <Text style={styles.itemTitle}>{item.title}</Text>
