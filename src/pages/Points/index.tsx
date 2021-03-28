@@ -1,6 +1,6 @@
 import React from 'react'
 import { Feather } from '@expo/vector-icons'
-import { Image, ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import MapView, { Marker } from 'react-native-maps'
 
@@ -16,7 +16,7 @@ const Points = () => {
   }
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <TouchableOpacity onPress={handleNavigateBack}>
           <Feather name="arrow-left" size={20} color="#34cb79" />
@@ -73,7 +73,7 @@ const Points = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-    </>
+    </SafeAreaView>
   )
 }
 
