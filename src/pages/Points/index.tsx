@@ -4,6 +4,7 @@ import { Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, Text, Vi
 import { useNavigation } from '@react-navigation/native'
 import MapView, { Marker } from 'react-native-maps'
 import { SvgUri } from 'react-native-svg'
+import * as location from 'expo-location'
 import api from '../../../services/api'
 
 interface Item {
@@ -16,6 +17,7 @@ const Points = () => {
   const navigation = useNavigation()
   const [items, setItems] = useState<Item[]>([])
   const [selectedItems, setSelectedItems] = useState<number[]>([])
+  const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0])
 
   function handleNavigateBack() {
     navigation.goBack()
@@ -52,6 +54,24 @@ const Points = () => {
     fetchItems()
   }, [])
 
+  useEffect(() => {
+    async function loadPosition() {
+      const { status } = await location.requestPermissionsAsync()
+
+      if (status !== 'granted') {
+        setInitialPosition([-23.550305, -46.6363896])
+      }
+
+      const currentLocation = await location.getCurrentPositionAsync()
+
+      const { latitude, longitude } = currentLocation.coords
+
+      setInitialPosition([latitude, longitude])
+    }
+
+    loadPosition()
+  }, [])
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -61,34 +81,36 @@ const Points = () => {
         <Text style={styles.title}>Bem vindo.</Text>
         <Text style={styles.description}>Encontre no mapa um ponto de coleta.</Text>
         <View style={styles.mapContainer}>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: -23.550305,
-              longitude: -46.6363896,
-              latitudeDelta: 0.013,
-              longitudeDelta: 0.013
-            }}
-          >
-            <Marker
-              style={styles.mapMarker}
-              coordinate={{
-                latitude: -23.550305,
-                longitude: -46.6363896,
+          {initialPosition[0] !== 0 && (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: initialPosition[0],
+                longitude: initialPosition[1],
+                latitudeDelta: 0.013,
+                longitudeDelta: 0.013
               }}
-              onPress={handleNavigateDetail}
             >
-              <View style={styles.mapMarkerContainer}>
-                <Image
-                  style={styles.mapMarkerImage}
-                  source={{
-                    uri: 'https://images.unsplash.com/photo-1543083477-4f785aeafaa9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60'
-                  }}
-                />
-                <Text style={styles.mapMarkerTitle}>Mercado</Text>
-              </View>
-            </Marker>
-          </MapView>
+              <Marker
+                style={styles.mapMarker}
+                coordinate={{
+                  latitude: initialPosition[0],
+                  longitude: initialPosition[1],
+                }}
+                onPress={handleNavigateDetail}
+              >
+                <View style={styles.mapMarkerContainer}>
+                  <Image
+                    style={styles.mapMarkerImage}
+                    source={{
+                      uri: 'https://images.unsplash.com/photo-1543083477-4f785aeafaa9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60'
+                    }}
+                  />
+                  <Text style={styles.mapMarkerTitle}>Mercado</Text>
+                </View>
+              </Marker>
+            </MapView>
+          )}
         </View>
       </View>
       <View style={styles.itemsContainer}>
