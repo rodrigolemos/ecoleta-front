@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Feather } from '@expo/vector-icons'
 import { Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import MapView, { Marker } from 'react-native-maps'
+import { SvgUri } from 'react-native-svg'
+import api from '../../../services/api'
+
+interface Item {
+  id: number
+  title: string
+  image_url: string
+}
 
 const Points = () => {
   const navigation = useNavigation()
+  const [items, setItems] = useState<Item[]>([])
 
   function handleNavigateBack() {
     navigation.goBack()
@@ -14,6 +23,23 @@ const Points = () => {
   function handleNavigateDetail() {
     navigation.navigate('Detail')
   }
+
+  async function fetchItems() {
+    try {
+      const response = await api.get('/items')
+      if (response.status !== 200)
+        throw new Error('Não foi possível consultar os itens.')
+      
+      setItems(response.data)
+      console.log(response.data)
+    } catch (error) {
+      alert(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchItems()
+  }, [])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -62,15 +88,17 @@ const Points = () => {
             paddingHorizontal: 30
           }}
         >
-          <TouchableOpacity style={styles.item} onPress={() => {}}>
-            <Text style={styles.itemTitle}>Lâmpadas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.item} onPress={() => {}}>
-            <Text style={styles.itemTitle}>Baterias</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.item} onPress={() => {}}>
-            <Text style={styles.itemTitle}>Orgânicos</Text>
-          </TouchableOpacity>
+          {items.map(item => (
+            <TouchableOpacity
+              key={String(item.id)}
+              style={styles.item}
+              onPress={() => {}}
+              activeOpacity={0.6}
+            >
+              <SvgUri width={42} height={42} uri={item.image_url} />
+              <Text style={styles.itemTitle}>{item.title}</Text>
+            </TouchableOpacity>
+          ))}
         </ScrollView>
       </View>
     </SafeAreaView>
