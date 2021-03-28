@@ -66,10 +66,10 @@ const Points = () => {
             <Text style={styles.itemTitle}>Lâmpadas</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.item} onPress={() => {}}>
-            <Text style={styles.itemTitle}>Lâmpadas</Text>
+            <Text style={styles.itemTitle}>Baterias</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.item} onPress={() => {}}>
-            <Text style={styles.itemTitle}>Lâmpadas</Text>
+            <Text style={styles.itemTitle}>Orgânicos</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
