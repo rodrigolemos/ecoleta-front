@@ -6,6 +6,14 @@ Ecoleta é uma aplicação open source para identificação de pontos de coleta 
 Caso queira consultar meus projetos pessoais, recomendo [esse](https://github.com/rodrigolemos/my-school-front) repositório para front-end e [esse](https://github.com/rodrigolemos/my-school) repositório para back-end.
 O back-end construído com base nesse repositório encontra-se [aqui](https://github.com/rodrigolemos/ecoleta).
 
+## Layout
+
+<p align="left" style="margin-top: 10px;">
+  <img alt="Principal" src="./src/assets/ecoleta-1.jfif" style="width: 375px; height: 667px; margin-right: 10px;">
+  <img alt="Principal" src="./src/assets/ecoleta-2.jfif" style="width: 375px; height: 667px;">
+</p>
+
+
 ## Autor
 
 Rodrigo Lemos
