@@ -9,8 +9,8 @@ O back-end construído com base nesse repositório encontra-se [aqui](https://gi
 ## Layout
 
 <p align="left" style="margin-top: 10px;">
-  <img alt="Principal" src="./src/assets/ecoleta-1.jfif" width="367" height="659">
-  <img alt="Principal" src="./src/assets/ecoleta-2.jfif" width="367" height="659">
+  <img alt="Principal" src="./src/assets/ecoleta-1.jfif" width="367" height="647">
+  <img alt="Principal" src="./src/assets/ecoleta-2.jfif" width="367" height="647">
 </p>
 
 
